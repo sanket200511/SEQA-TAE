@@ -3,6 +3,7 @@ services:
   - type: web
     name: codelens-backend
     env: python
+    plan: free
     region: oregon
     rootDir: backend
     buildCommand: pip install -r requirements.txt && alembic upgrade head
@@ -25,6 +26,7 @@ services:
   - type: web
     name: codelens-frontend
     env: static
+    plan: free
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
@@ -43,4 +45,5 @@ databases:
   # 3. Render PostgreSQL Database
   - name: codelens-db
     databaseName: codelens
+    plan: free
     region: oregon
