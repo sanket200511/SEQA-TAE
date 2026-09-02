@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "check_id": "rules.python.security.path-traversal",
+      "path": "app/controllers/file_server.py",
+      "start": { "line": 34, "col": 5 },
+      "end": { "line": 34, "col": 45 },
+      "extra": {
+        "message": "User-controlled input passed directly to open() file path without sanitization (Path Traversal vulnerability).",
+        "severity": "ERROR",
+        "lines": "with open('/var/uploads/' + filename, 'r') as f:",
+        "metadata": { "cwe": ["CWE-22"] }
+      }
+    },
+    {
+      "check_id": "rules.javascript.complexity.deep-nesting",
+      "path": "frontend/src/utils/parser.ts",
+      "start": { "line": 78, "col": 9 },
+      "end": { "line": 90, "col": 10 },
+      "extra": {
+        "message": "Deeply nested conditional block (depth = 6). Consider refactoring into early return statements.",
+        "severity": "WARNING",
+        "lines": "if (a) { if (b) { if (c) { if (d) { if (e) { doTask(); } } } } }",
+        "metadata": { "category": "maintainability" }
+      }
+    }
+  ]
+}

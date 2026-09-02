@@ -1,0 +1,5 @@
+rule,message,severity,file,line,category,code
+SEC-101,Hardcoded API Secret Key detected,HIGH,config/secrets.env,5,Security Vulnerability,"API_KEY = 'sk_live_998877665544332211'"
+CML-204,Function exceeds maximum cyclomatic complexity score,MEDIUM,services/calculator.py,102,Code Smell,"def calculate_tax(salary, state, deductions): ..."
+CML-301,Duplicate code block detected (14 identical lines),MEDIUM,controllers/billing.py,45,Code Smell,"for item in invoices: process(item)"
+BUG-401,Potential Null Pointer Dereference on uninitialized object,HIGH,core/loader.cpp,89,Bug,"item->getValue()"

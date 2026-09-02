@@ -1,0 +1,56 @@
+{
+  "results": [
+    {
+      "code": "17 PASSWORD = \"admin_secret_2026\"\n",
+      "filename": "backend/config.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": { "id": 259, "link": "https://cwe.mitre.org/data/definitions/259.html" },
+      "issue_severity": "HIGH",
+      "issue_text": "Possible hardcoded password: 'admin_secret_2026'",
+      "line_number": 17,
+      "line_range": [17],
+      "more_info": "https://bandit.readthedocs.io/en/latest/plugins/b105_hardcoded_password_string.html",
+      "test_id": "B105",
+      "test_name": "hardcoded_password_string"
+    },
+    {
+      "code": "42 query = f\"SELECT * FROM users WHERE username='{username}' AND role='{user_role}'\"\n43 cursor.execute(query)\n",
+      "filename": "backend/database.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": { "id": 89, "link": "https://cwe.mitre.org/data/definitions/89.html" },
+      "issue_severity": "HIGH",
+      "issue_text": "Possible SQL injection vector through raw string formatting in cursor.execute",
+      "line_number": 43,
+      "line_range": [42, 43],
+      "more_info": "https://bandit.readthedocs.io/en/latest/plugins/b608_hardcoded_sql_expression.html",
+      "test_id": "B608",
+      "test_name": "hardcoded_sql_expression"
+    },
+    {
+      "code": "104 os.system(\"ping -c 1 \" + user_ip_address)\n",
+      "filename": "backend/utils/network.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": { "id": 78, "link": "https://cwe.mitre.org/data/definitions/78.html" },
+      "issue_severity": "HIGH",
+      "issue_text": "Consider possible security implications associated with the os.system call.",
+      "line_number": 104,
+      "line_range": [104],
+      "more_info": "https://bandit.readthedocs.io/en/latest/plugins/b605_start_process_with_a_shell.html",
+      "test_id": "B605",
+      "test_name": "start_process_with_a_shell"
+    },
+    {
+      "code": "28 token = hashlib.md5(user_email.encode()).hexdigest()\n",
+      "filename": "backend/auth.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": { "id": 327, "link": "https://cwe.mitre.org/data/definitions/327.html" },
+      "issue_severity": "MEDIUM",
+      "issue_text": "Use of weak MD5 hash function for security sensitive token generation.",
+      "line_number": 28,
+      "line_range": [28],
+      "more_info": "https://bandit.readthedocs.io/en/latest/plugins/b303_md5.html",
+      "test_id": "B303",
+      "test_name": "md5"
+    }
+  ]
+}

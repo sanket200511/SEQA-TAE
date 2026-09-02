@@ -1,0 +1,12 @@
+{
+  "python.defaultInterpreterPath": "d:/Projects/SEQA-TAE/backend/venv/Scripts/python.exe",
+  "python.pythonPath": "d:/Projects/SEQA-TAE/backend/venv/Scripts/python.exe",
+  "pyrefly.pythonPath": "d:/Projects/SEQA-TAE/backend/venv/Scripts/python.exe",
+  "python.analysis.extraPaths": [
+    "d:/Projects/SEQA-TAE/backend/venv/Lib/site-packages",
+    "d:/Projects/SEQA-TAE/backend"
+  ],
+  "python.analysis.autoSearchPaths": true,
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
+}

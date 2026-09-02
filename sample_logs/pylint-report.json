@@ -1,0 +1,35 @@
+[
+  {
+    "type": "refactor",
+    "module": "app.services.analytics",
+    "obj": "process_large_dataset",
+    "line": 64,
+    "column": 0,
+    "path": "app/services/analytics.py",
+    "symbol": "too-many-statements",
+    "message": "Function 'process_large_dataset' has too many statements (62/50)",
+    "message-id": "R0915"
+  },
+  {
+    "type": "convention",
+    "module": "app.models.user",
+    "obj": "usr_D",
+    "line": 12,
+    "column": 4,
+    "path": "app/models/user.py",
+    "symbol": "invalid-name",
+    "message": "Variable name 'usr_D' doesn't conform to snake_case naming style",
+    "message-id": "C0103"
+  },
+  {
+    "type": "warning",
+    "module": "app.utils.helpers",
+    "obj": "compute_hash",
+    "line": 31,
+    "column": 8,
+    "path": "app/utils/helpers.py",
+    "symbol": "unused-variable",
+    "message": "Unused variable 'temp_buf'",
+    "message-id": "W0612"
+  }
+]

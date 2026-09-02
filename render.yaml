@@ -1,0 +1,48 @@
+services:
+  # 1. Backend Web Service (FastAPI)
+  - type: web
+    name: codelens-backend
+    env: python
+    region: oregon
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && alembic upgrade head
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: codelens-db
+          property: connectionString
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: codelens-frontend
+          property: url
+      - key: ENVIRONMENT
+        value: production
+
+  # 2. Frontend Static Site (React / Vite)
+  - type: web
+    name: codelens-frontend
+    env: static
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: codelens-backend
+          property: url
+
+databases:
+  # 3. Render PostgreSQL Database
+  - name: codelens-db
+    databaseName: codelens
+    user: postgres
+    region: oregon

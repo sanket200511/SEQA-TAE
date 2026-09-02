@@ -1,0 +1,47 @@
+[
+  {
+    "filePath": "src/services/authService.js",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'tokenSecret' is defined but never used.",
+        "line": 14,
+        "column": 9
+      },
+      {
+        "ruleId": "complexity",
+        "severity": 2,
+        "message": "Function 'validateUserPermissions' has a complexity of 18 (max is 10).",
+        "line": 45,
+        "column": 1
+      },
+      {
+        "ruleId": "no-eval",
+        "severity": 2,
+        "message": "eval can be harmful and lead to dynamic execution security risks.",
+        "line": 88,
+        "column": 12
+      }
+    ]
+  },
+  {
+    "filePath": "src/components/UserDashboard.tsx",
+    "messages": [
+      {
+        "ruleId": "max-lines-per-function",
+        "severity": 1,
+        "message": "Component 'UserDashboard' has 240 lines, which exceeds the maximum allowable 150 lines.",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "ruleId": "no-magic-numbers",
+        "severity": 1,
+        "message": "No magic number: 86400000 should be declared as a named constant.",
+        "line": 112,
+        "column": 34
+      }
+    ]
+  }
+]
