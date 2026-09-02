@@ -17,7 +17,7 @@ services:
         fromService:
           type: web
           name: codelens-frontend
-          property: url
+          property: host
       - key: ENVIRONMENT
         value: production
 
@@ -25,7 +25,6 @@ services:
   - type: web
     name: codelens-frontend
     env: static
-    region: oregon
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
@@ -38,11 +37,10 @@ services:
         fromService:
           type: web
           name: codelens-backend
-          property: url
+          property: host
 
 databases:
   # 3. Render PostgreSQL Database
   - name: codelens-db
     databaseName: codelens
-    user: postgres
     region: oregon

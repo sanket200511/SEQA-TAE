@@ -22,7 +22,7 @@ app = FastAPI(
 )
 
 # Configure CORS dynamically from FRONTEND_URL or CORS_ORIGINS
-frontend_url = os.getenv("FRONTEND_URL", "").strip()
+frontend_url_env = os.getenv("FRONTEND_URL", "").strip()
 cors_origins_env = os.getenv("CORS_ORIGINS", "").strip()
 
 origins = [
@@ -30,11 +30,21 @@ origins = [
     "http://127.0.0.1:5173"
 ]
 
-if frontend_url:
-    origins.extend([u.strip() for u in frontend_url.split(",") if u.strip()])
+if frontend_url_env:
+    for u in frontend_url_env.split(","):
+        u_str = u.strip()
+        if u_str:
+            origins.append(u_str)
+            if not u_str.startswith("http://") and not u_str.startswith("https://"):
+                origins.append(f"https://{u_str}")
 
 if cors_origins_env:
-    origins.extend([u.strip() for u in cors_origins_env.split(",") if u.strip()])
+    for u in cors_origins_env.split(","):
+        u_str = u.strip()
+        if u_str:
+            origins.append(u_str)
+            if not u_str.startswith("http://") and not u_str.startswith("https://"):
+                origins.append(f"https://{u_str}")
 
 # Deduplicate origins while preserving order
 allowed_origins = list(dict.fromkeys(origins))

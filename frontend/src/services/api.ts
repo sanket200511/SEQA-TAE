@@ -9,8 +9,11 @@ import {
   VulnerabilityStatus 
 } from '../types';
 
-const BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : '';
-const API_BASE = `${BASE_URL}/api`;
+let rawUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.trim().replace(/\/$/, '') : '';
+if (rawUrl && !rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+  rawUrl = `https://${rawUrl}`;
+}
+const API_BASE = `${rawUrl}/api`;
 
 async function safeFetch(url: string, options?: RequestInit): Promise<Response> {
   try {
