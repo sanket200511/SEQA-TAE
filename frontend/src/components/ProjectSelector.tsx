@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Folder, Plus, Check, X, FolderX } from 'lucide-react';
+import { Folder, Plus, Check, X, FolderX, AlertCircle, Loader2 } from 'lucide-react';
 import { Project } from '../types';
 import { createProject } from '../services/api';
 
@@ -23,11 +23,13 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
   const [description, setDescription] = useState('');
   const [language, setLanguage] = useState('Python');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
     setLoading(true);
+    setError(null);
     try {
       const newProj = await createProject(name, description, language);
       onProjectCreated(newProj);
@@ -35,11 +37,19 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
       setShowCreateModal(false);
       setName('');
       setDescription('');
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error('Failed to create project:', err);
+      setError(err.message || 'Failed to create project. Please verify backend status.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowCreateModal(false);
+    setError(null);
+    setName('');
+    setDescription('');
   };
 
   return (
@@ -59,7 +69,10 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
           </button>
 
           <button
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              setError(null);
+              setShowCreateModal(true);
+            }}
             className="p-2 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs transition-colors shrink-0 min-h-[40px] min-w-[40px] flex items-center justify-center"
             title="Create New Project"
             aria-label="Create New Project"
@@ -115,6 +128,7 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
             <button
               onClick={() => {
                 setIsOpen(false);
+                setError(null);
                 setShowCreateModal(true);
               }}
               className="w-full text-left px-3.5 py-3 text-xs font-medium text-indigo-400 hover:bg-slate-800 flex items-center gap-1.5 min-h-[44px]"
@@ -135,12 +149,19 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
                 <Folder size={18} className="text-indigo-400 shrink-0" />
                 <h3 className="font-semibold text-slate-100 text-sm truncate">Create Real Project Scope</h3>
               </div>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center">
+              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center">
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleCreate} className="p-5 space-y-4 overflow-y-auto flex-1">
+              {error && (
+                <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+                  <AlertCircle size={16} className="shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">Project Name</label>
                 <input
@@ -180,7 +201,7 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
               <div className="pt-3 flex flex-col-reverse sm:flex-row justify-end gap-2.5 border-t border-slate-800">
                 <button
                   type="button"
-                  onClick={() => setShowCreateModal(false)}
+                  onClick={handleCloseModal}
                   className="w-full sm:w-auto px-4 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 min-h-[44px]"
                 >
                   Cancel
@@ -188,9 +209,16 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors disabled:opacity-50 min-h-[44px]"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors disabled:opacity-50 min-h-[44px] flex items-center justify-center gap-2"
                 >
-                  {loading ? 'Creating...' : 'Create Project'}
+                  {loading ? (
+                    <>
+                      <Loader2 size={15} className="animate-spin" />
+                      <span>Creating...</span>
+                    </>
+                  ) : (
+                    <span>Create Project</span>
+                  )}
                 </button>
               </div>
             </form>
