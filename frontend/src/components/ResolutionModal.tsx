@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ShieldCheck, Check, AlertCircle } from 'lucide-react';
 import { Vulnerability, VulnerabilityStatus } from '../types';
 import { updateVulnerabilityStatus } from '../services/api';
@@ -32,8 +33,8 @@ export const ResolutionModal: React.FC<ResolutionModalProps> = ({ vulnerability,
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="w-full max-w-md max-h-[90vh] rounded-xl bg-slate-900 border border-slate-800 shadow-2xl flex flex-col overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2 min-w-0">
@@ -126,6 +127,7 @@ export const ResolutionModal: React.FC<ResolutionModalProps> = ({ vulnerability,
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

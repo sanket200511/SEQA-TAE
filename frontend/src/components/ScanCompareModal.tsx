@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, GitCompare, ArrowRight, ShieldAlert, Sparkles, CheckCircle2, FolderX } from 'lucide-react';
 import { AnalysisRun, ScanCompareResult, Project } from '../types';
 import { fetchAnalysisHistory, compareScans } from '../services/api';
@@ -57,8 +58,8 @@ export const ScanCompareModal: React.FC<ScanCompareModalProps> = ({ activeProjec
     }
   }, [runA, runB]);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in duration-200">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="w-full max-w-4xl max-h-[90vh] rounded-xl bg-slate-900 border border-slate-800 shadow-2xl flex flex-col overflow-hidden">
         <div className="px-4 sm:px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2 min-w-0">
@@ -222,6 +223,7 @@ export const ScanCompareModal: React.FC<ScanCompareModalProps> = ({ activeProjec
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

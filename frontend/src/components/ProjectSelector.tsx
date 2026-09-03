@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Folder, Plus, Check, X, FolderX } from 'lucide-react';
 import { Project } from '../types';
 import { createProject } from '../services/api';
@@ -125,9 +126,9 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
         )}
       </div>
 
-      {/* Create Project Modal (Fixed Viewport Overlay) */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+      {/* Create Project Modal attached directly to document.body via Portal */}
+      {showCreateModal && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-full max-w-md max-h-[90vh] rounded-xl bg-slate-900 border border-slate-800 shadow-2xl flex flex-col overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2 min-w-0">
@@ -194,7 +195,8 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = ({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
