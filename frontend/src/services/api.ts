@@ -35,7 +35,8 @@ async function safeFetch(url: string, options?: RequestInit): Promise<Response> 
     const res = await fetch(url, options);
     return res;
   } catch (err: any) {
-    throw new Error('Unable to connect to CodeLens API server. Please verify backend service status.');
+    console.error('Fetch error for target URL:', url, err);
+    throw new Error(`Unable to connect to backend service (${url}). Please ensure backend is active.`);
   }
 }
 
