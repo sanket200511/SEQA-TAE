@@ -9,11 +9,26 @@ import {
   VulnerabilityStatus 
 } from '../types';
 
-let rawUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.trim().replace(/\/$/, '') : '';
-if (rawUrl && !rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
-  rawUrl = `https://${rawUrl}`;
+function getApiBaseUrl(): string {
+  let envUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.trim().replace(/\/$/, '') : '';
+  if (envUrl) {
+    if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
+      envUrl = `https://${envUrl}`;
+    }
+    return `${envUrl}/api`;
+  }
+
+  // Automatic fallback on Render:
+  // e.g., "codelens-frontend-ds44.onrender.com" -> "https://codelens-backend-ds44.onrender.com/api"
+  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    const backendHost = window.location.hostname.replace('frontend', 'backend');
+    return `https://${backendHost}/api`;
+  }
+
+  return '/api';
 }
-const API_BASE = `${rawUrl}/api`;
+
+const API_BASE = getApiBaseUrl();
 
 async function safeFetch(url: string, options?: RequestInit): Promise<Response> {
   try {
@@ -36,7 +51,10 @@ export async function createProject(name: string, description?: string, primary_
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, description, primary_language }),
   });
-  if (!res.ok) throw new Error('Failed to create project');
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: 'Failed to create project' }));
+    throw new Error(err.detail || 'Failed to create project');
+  }
   return res.json();
 }
 
