@@ -11,11 +11,14 @@ import {
 
 function getApiBaseUrl(): string {
   let envUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.trim().replace(/\/$/, '') : '';
+  
   if (envUrl) {
-    if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
-      envUrl = `https://${envUrl}`;
+    let domain = envUrl.replace(/^https?:\/\//, '');
+    // If Render passes an internal host like "codelens-backend-6d3o" without a dot extension
+    if (!domain.includes('.') && !domain.includes('localhost')) {
+      domain = `${domain}.onrender.com`;
     }
-    return `${envUrl}/api`;
+    return `https://${domain}/api`;
   }
 
   // Automatic fallback on Render:
